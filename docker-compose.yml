@@ -15,17 +15,17 @@ services:
       - ./docker/logs/xdebug:/var/log/xdebug
   database:
     build:
-      context: ./docker/database/${DATABASE_TYPE}/${DATABASE_VERSION}
-      dockerfile: dockerFile.mysql
-    container_name: "dockerFile.${DATABASE_TYPE}"
+      context: ./docker/database/${DB_TYPE}/${DB_VERSION}
+      dockerfile: dockerFile.${DB_TYPE}
+    container_name: "dockerFile.${DB_TYPE}"
     restart: "always"
     ports:
-      - "${DATABASE_PORT}:${DATABASE_PORT}"
+      - "${DB_PORT}:${DB_PORT}"
     volumes:
-      - ./docker/database/${DATABASE_TYPE}/${DATABASE_VERSION}/initdb:/docker-entrypoint-initdb.d
-      - ./docker/logs/mysql:/var/log/mysql
+      - ./docker/database/${DB_TYPE}/${DB_VERSION}/initdb:/docker-entrypoint-initdb.d
+      - ./docker/logs/${DB_TYPE}:/var/log/{DB_TYPE}
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      ${DB_VARIABLE_ROOT_PASWORD}: ${DB_ROOT_PASSWORD}
+      ${DB_VARIABLE_NAME}: ${DB_NAME}
+      ${DB_VARIABLE_USER}: ${DB_USER}
+      ${DB_VARIABLE_PASSWORD}: ${DB_PASSWORD}
