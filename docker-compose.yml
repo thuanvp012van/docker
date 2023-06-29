@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  php:
+    build:
+      context: ./docker/php/${PHP_VERSION}
+    container_name: "dockerFile.php"
+    restart: "always"
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
+    links:
+      - database
+    volumes:
+      - ./src:/var/www/html
+      - ./docker/php/${PHP_VERSION}/php.ini:/usr/local/etc/php/php.ini
+      - ./docker/logs/apache2:/var/log/apache2
+      - ./docker/logs/xdebug:/var/log/xdebug
+      - ./docker/php/${PHP_VERSION}/conf:/etc/apache2
+  database:
+    build:
+      context: "./docker/database/${DATABASE_TYPE}/${DATABASE_VERSION}"
+    container_name: "dockerFile.${DATABASE_TYPE}"
+    restart: "always"
+    ports:
+      - "${DATABASE_PORT}:${DATABASE_PORT}"
+    volumes:
+      - ./docker/database/${DATABASE_TYPE}/${DATABASE_VERSION}/initdb:/docker-entrypoint-initdb.d
+      - ./docker/logs/mysql:/var/log/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
