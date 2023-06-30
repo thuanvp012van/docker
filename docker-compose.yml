@@ -25,7 +25,7 @@ services:
       - ./docker/database/${DB_TYPE}/${DB_VERSION}/initdb:/docker-entrypoint-initdb.d
       - ./docker/logs/${DB_TYPE}:/var/log/{DB_TYPE}
     environment:
-      ${DB_VARIABLE_ROOT_PASWORD}: ${DB_ROOT_PASSWORD}
-      ${DB_VARIABLE_NAME}: ${DB_NAME}
-      ${DB_VARIABLE_USER}: ${DB_USER}
-      ${DB_VARIABLE_PASSWORD}: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
